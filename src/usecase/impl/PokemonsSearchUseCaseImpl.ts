@@ -8,7 +8,7 @@ export default class SayHelloUseCaseImpl implements SayHelloUseCase {
 
     private pokemonGateway: PokedexGateway = new PokedexGatewayImpl();
 
-    execute(user: Pokemon): Promise<Pokemon> {
+    async execute(user: Pokemon): Promise<Pokemon> {
         return this.pokemonGateway.findPokemonByName(user.name)
             .then(pokemon => pokemon);
     }

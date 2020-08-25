@@ -1,13 +1,14 @@
 import PokedexGateway from "../../usecase/gateway/PokedexGateway";
 import Pokemon from "../../domain/Pokemon";
-import PokedexIntegration, { PokedexIntegrationImpl } from "../PokedexIntegration";
+import PokedexIntegration from "../PokedexIntegration";
 import PokemonResourceIntegration from "../resource/PokemonResourceIntegration";
+import { PokedexIntegrationImpl } from "../PokedexIntegrationImpl";
 
 export default class PokedexGatewayImpl implements PokedexGateway {
 
     private pokemonIntegration: PokedexIntegration = new PokedexIntegrationImpl();
 
-    findPokemonByName(name: string): Promise<Pokemon> {
+    async findPokemonByName(name: string): Promise<Pokemon> {
         return this.pokemonIntegration.findPokemonByName(name)
             .then(pokemonIntegrationResouirce => { return this.converter(pokemonIntegrationResouirce) });
 
