@@ -8,20 +8,28 @@ export default class PokemonSearch extends Component<PokemonResource> {
 
     private pokemonSearchUseCase: PokemonSearchUseCase = new PokemonSearchCaseImpl();
     private pokemon: PokemonResource;
-
+    private _isMounted: boolean = false;
     constructor(props: PokemonResource) {
         super(props)
-        this.state = new PokemonResource();
         this.pokemon = props;
+    }
 
+    componentDidMount() {
+        this._isMounted = true;
+        this.onRead()
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     onRead() {
         this.pokemonSearchUseCase.execute(new Pokemon(this.pokemon.name))
             .then(pokemonStats => {
-                this.pokemon = new PokemonResource(pokemonStats.name, pokemonStats.numberOfAbilities, pokemonStats.baseExperience, pokemonStats.imageUrl)
-                console.log(this.pokemon)
-                this.setState(this.pokemon);
+                if (this._isMounted) {
+                    this.pokemon = new PokemonResource(pokemonStats.name, pokemonStats.numberOfAbilities, pokemonStats.baseExperience, pokemonStats.imageUrl)
+                    this.forceUpdate();
+                }
             });
     }
 
@@ -32,17 +40,15 @@ export default class PokemonSearch extends Component<PokemonResource> {
     render() {
         return (
             <>
-                <input type="text" onChange={pokemonEventChange => this.change(pokemonEventChange)} />
-                <br/>
-                <button onClick={() => this.onRead()}>Batata</button>
-                <br/>
-                <strong>Nome: </strong> {this.pokemon.name}
-                <br/>
-                <strong>XP</strong> {this.pokemon.baseExperience}
-                <br/>
-                <strong>Habilidades</strong> {this.pokemon.numberOfAbilities}
-                <br/>
-                <img src={this.pokemon.imageUrl} ></img>
+                <div className="pokedex">
+                    <strong>Nome: </strong> {this.pokemon.name}
+                    <br />
+                    <strong>XP</strong> {this.pokemon.baseExperience}
+                    <br />
+                    <strong>Habilidades</strong> {this.pokemon.numberOfAbilities}
+                    <br />
+                    <img src={this.pokemon.imageUrl} alt={this.pokemon.name}></img>
+                </div>
             </>
         );
     }

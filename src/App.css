@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.pokedex {
+  width: 20%;
+display: block;
+float: left;
+}
