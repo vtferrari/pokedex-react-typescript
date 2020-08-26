@@ -27,15 +27,12 @@ export default class PokemonSearch extends Component<PokemonResource> {
         this.pokemonSearchUseCase.execute(new Pokemon(this.pokemon.name))
             .then(pokemonStats => this.updatePokedex(pokemonStats));
     }
+    
     updatePokedex(pokemonStats: PokemonResource) {
         if (this._isMounted) {
             this.pokemon = new PokemonResource(pokemonStats.name, pokemonStats.numberOfAbilities, pokemonStats.baseExperience, pokemonStats.imageUrl)
             this.forceUpdate();
         }
-    }
-
-    change(pokemonEventChange: any) {
-        this.pokemon = new PokemonResource(pokemonEventChange.target.value)
     }
 
     render() {
